@@ -1,0 +1,109 @@
+{% extends 'customer/base.html' %}
+    {% block navbar %}
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: linear-gradient(140deg, #a770ef, #cf8bf3 30%, #fdb99b), rgb(235,235,245);color: rgb(19,19,19);border-style: none;">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink" style="color: var(--light);"></i></div>
+                    <div class="sidebar-brand-text mx-3"><span style="color: var(--light);">tapT</span></div>
+                </a>
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item" style="color: #131313;"><a class="nav-link active" href="customer_profile.html"><i class="fas fa-user" style="color: var(--light);"></i><span style="color: var(--light);padding: 0 20px;">Thông tin cá nhân</span></a></li>
+                    <li class="nav-item"><a class="nav-link active" href="customer_social.html"><i class="fas fa-table" style="color: var(--light);"></i><span style="color: var(--light);padding: 0 20px;">Mạng xã hội</span></a></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"><a class="nav-link" href="../../../tapme/templates/tapme/register.html"><i class="fa fa-arrow-circle-o-right" style="color: var(--light);"></i><span style="color: var(--light);padding: 0 20px;">Đăng xuất</span></a></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button" style="background: var(--white);color: #000000;"></button></div>
+            </div>
+        </nav>
+    {% endblock navbar %}
+
+    {% block content %}
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content" style="background: #ebebf5;padding-bottom: 5px;">
+                <!-- Start: navbar -->
+                <nav class="navbar navbar-light navbar-expand shadow-none mb-4 topbar static-top" style="background: var(--white);margin: 0 0;">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <div></div>
+                        <ul class="navbar-nav flex-nowrap ml-auto">
+                            <div class="d-none d-sm-block topbar-divider"></div>
+                            <li class="nav-item dropdown no-arrow">
+                                <div class="nav-item dropdown no-arrow">
+                                    <a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">
+                                    <span class="d-none d-lg-inline mr-2 text-gray-600 small">
+                                        {% if user.first_name or user.last_name %}
+                                            {{ user.first_name }} {{ user.last_name }}
+                                        {% endif %}
+                                </span>
+                                    <img class="border rounded-circle img-profile" src="{{ customer.avatar.url|default_if_none:"#" }}"></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav><!-- End: navbar -->
+
+                <div class="container-fluid shadow-sm" style="border-radius: 25px;background: #f4f4fc;width: 98%;padding-bottom: 10px;">
+
+
+                    <h3 class="text-center text-dark mb-4" style="padding: 30px 20px;padding-bottom: 15px;">Quản lí mạng xã hội</h3><!-- Start: colapse-add-new-social -->
+                    <div style="padding: 20px 0;"><a class="btn btn-primary text-capitalize text-center" data-toggle="collapse" aria-expanded="false"
+                                                     aria-controls="collapse-100" href="#collapse-100" role="button" style="background: #131313;border-style: none;margin-left: 20px;">Thêm mạng xã hội mới</a>
+                        <div class="collapse" id="collapse-100" style="margin: 20px 0;margin-left: 20px;">
+                            <div class="card" style="padding: 20px 20px;">
+                                <form><label style="margin: 15px 0;">Chọn mạng xã hội</label>
+                                    <div class="dropdown"><button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button"><i class="fa fa-star" style="margin: 0 10px;"></i>Facebook</button>
+                                        <div class="dropdown-menu" style="padding: 0 20px;"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a>
+                                            <div class="dropdown-divider"></div>
+                                        </div>
+                                    </div><label style="margin: 15px 0;">Tên mạng xã hội</label><input class="form-control" type="url" style="max-width: 500px;margin: 10px 0;"><label style="margin: 15px 0;">Thêm liên kết</label><input class="form-control" type="url" style="max-width: 500px;margin: 10px 0;"><button class="btn btn-primary" type="button" style="margin: 10px auto;">Lưu</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div><!-- End: colapse-add-new-social -->
+                    <div class="card shadow-sm mb-3" style="margin: 10px 10px;margin-right: 10px;margin-left: 10px;border-radius: 25px;margin-bottom: 10px;">
+                        <div class="card-header py-3" style="border-top-left-radius: 25px;border-top-right-radius: 25px;">
+
+                            <!------------- LIST SOCIAL ---------------------------------->
+                            <p class="text-primary m-0 font-weight-bold">Danh sách mạng xã hội</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+
+                                    {% for social in social_customer %}
+                                        <div class="col-12 col-md-6 pulse animated" style="padding: 5px 20px;">
+                                        <!-- Start: Collapsible Card -->
+                                            <div class="shadow-sm card" style="margin-top: 20px;">
+                                                <a class="btn btn-link text-left card-header font-weight-bold"
+                                                   data-toggle="collapse"
+                                                   aria-expanded="false"
+                                                   aria-controls="collapse-{{ social.social.id }}"
+                                                   href="#collapse-{{ social.social.id }}" role="button">
+                                                    <img class="icon" src="{{ social.social.img.url|default_if_none:"#" }}"
+                                                       style="margin: 5px 10px;margin-left:
+                                                       20px;width: 30px;height: 30px;"></img>
+                                                    {{ social.social.name }}
+                                                </a>
+                                                <div class="collapse" id="collapse-{{ social.social.id }}" style="padding: 20px 20px;">
+                                                    <label style="margin: 10px auto;">Liên kết</label>
+                                                    <form>
+                                                        <input class="form-control" type="url"
+                                                               style="max-width: 500px;width: 100%;margin: 10px" value="{{ social.url_social }}" >
+                                                        <div class="d-flex flex-row flex-shrink-0 justify-content-around">
+                                                            <button class="btn btn-primary" type="button" style="width: 50%;background: rgb(4,158,57);border-style: none;margin: 5px 5px;">Lưu</button>
+                                                            <button class="btn btn-primary" type="button" style="width: 50%;background: var(--red);border-style: none;margin: 5px 5px;">Xóa&nbsp;</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div><!-- End: Collapsible Card -->
+                                        </div>
+                                    {% endfor %}
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    {% endblock content %}
+

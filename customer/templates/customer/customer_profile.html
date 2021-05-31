@@ -1,0 +1,177 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+
+    {% block content %}
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content" style="background: #ebebf5;padding-bottom: 10px;">
+                <!-- Start: navbar -->
+                <nav class="navbar navbar-light navbar-expand shadow-none mb-4 topbar static-top" style="background: var(--white);margin: 0 0;">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <div></div>
+                        <ul class="navbar-nav flex-nowrap ml-auto">
+                            <div class="d-none d-sm-block topbar-divider"></div>
+                            <li class="nav-item dropdown no-arrow">
+                                <div class="nav-item dropdown no-arrow">
+                                    <a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">
+                                    <span class="d-none d-lg-inline mr-2 text-gray-600 small">
+                                        {% if user.first_name or user.last_name %}
+                                            {{ user.first_name }} {{ user.last_name }}
+                                        {% endif %}
+                                </span>
+                                    <img class="border rounded-circle img-profile" src="{{ customer.avatar.url|default_if_none:"#" }}"></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav><!-- End: navbar -->
+                <div class="container-fluid shadow-sm" style="border-radius: 25px;width: 98%;background: #f4f4fc;">
+                    <h3 class="text-center text-dark mb-4" style="padding: 30px 20px;">Quản lý thông tin cá nhân</h3>
+                    <div class="row mb-3">
+                    <!-- Start: col-Avatar -->
+                        <div class="col-lg-4">
+                            <!-- Start: avatar -->
+                            <div class="card mb-3" style="border-radius: 25px;background: #ffffff;">
+                                <div class="card-body text-center shadow" style="border-radius: 25px;border-style: none;">
+
+                                    <form id="form-user-avatar" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <img class="rounded-circle mb-3 mt-4" src="{{ customer.avatar.url|default_if_none:"#" }}" width="160" height="160" style="background-size: contain;">
+                                        <div class="custom-file mb-3 mt-4">
+                                            <input class="custom-file-input" type="file" name="user_avatar">
+                                            <label class="custom-file-label" for="customFile">Choose file</label>
+                                        </div>
+                                        <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Lưu ảnh đại diện</button></div>
+                                    </form>
+
+                                </div>
+                            </div><!-- End: avatar -->
+                            <div class="card mb-3"></div><!-- Start: user-social -->
+                            <div class="card shadow mb-4" style="border-radius: 25px;">
+                                <div class="card-header py-3" style="border-top-left-radius: 25px;border-top-right-radius: 25px;">
+                                    <h6 class="text-primary font-weight-bold m-0">Mạng xã hội của bạn</h6>
+                                </div>
+                                <div class="card-body">
+                                    {% for social in socials %}
+                                        <div style="margin: 5px;">
+                                        <img  src="{{ social.social.img.url|default_if_none:'#' }}" style="width: 20px; height: 20px">
+                                            <span style="margin-left: 20px;">{{ social.social.name }}</span></div>
+                                    {% endfor %}
+                                </div>
+                            </div><!-- End: user-social -->
+                        </div>
+                        <!-- Start: col-user-info -->
+
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col offset-lg-0">
+                                    <!-- Start: user-info -->
+                                    <div class="card shadow mb-3" style="border-radius: 25px;">
+                                        <div class="card-header py-3" style="border-radius: 25px;border-top-left-radius: 25px;border-top-right-radius: 25px;border-bottom-right-radius: 0;border-bottom-left-radius: 0;">
+
+                                        <!------------------------Content------------------------------------->
+
+                                            <p class="text-primary m-0 font-weight-bold">Thông tin cá nhân</p>
+                                        </div>
+                                        <div class="card-body">
+                                        <!------------------------Content------------------------------------->
+                                            <form id="form-user-info">
+                                                {% csrf_token %}
+                                                <div class="form-row">
+                                                    <div class="col-12">
+                                                        <div class="form-group"><label for="full_name"><strong>Họ và tên</strong></label>
+                                                            <input name="full_name"
+                                                                    {% if user.first_name or user.last_name %}
+                                                                        value="{{ user.first_name }}"
+                                                                    {% endif %}
+                                                                    class="form-control" type="text" id="first_name" placeholder="Là tên hiển thị trên trang thông tin của bạn" ></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-12">
+                                                        <div class="form-group"><label for="sub_name"><strong>Biệt danh</strong></label>
+                                                            <input name="sub_name"
+                                                                    {% if customer.sub_name %}
+                                                                        value="{{ customer.sub_name }}"
+                                                                    {% endif %}
+                                                                    class="form-control" type="text" id="first_name" placeholder="Là biệt danh hiển thị sau tên của bạn" ></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-12 col-md-6">
+                                                        <div class="form-group"><label for="phone_number"><strong>Số điện thoại</strong><br></label>
+                                                            <input name="phone_number"  {% if customer.phone %}
+                                                                                            value="{{ customer.phone }}"
+                                                                                        {% endif %}
+                                                                   class="form-control" type="number" placeholder="Nhập số điện thoại"></div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6">
+                                                        <div class="form-group"><label for="email"><strong>Email</strong><br></label>
+                                                            <input name="email" {% if user.email %}
+                                                                                    value="{{ user.email }}"
+                                                                                {% endif %}
+                                                                   class="form-control" type="email" id="email" placeholder="user@example.com" name="email"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div id="notification_change_info">
+                                                    </div>
+
+                                                </div>
+                                            <div class="form-row">
+                                                <div class="col-12 col-md-6">
+                                                    <button id="btn-save-user-info" class="btn btn-primary btn-sm" type="submit">Lưu thông tin cá nhân
+                                                </button>
+                                                </div>
+                                                <div class="col-12 col-md-6" style="text-align: right">
+                                                    <a href="{% url 'tapme:customer:change_password' %}">
+                                                        <button class="btn btn-danger btn-sm">Đổi mật khẩu</button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div><!-- End: user-info -->
+                                    <!-- Start: address -->
+                                    <div class="card shadow" style="border-radius: 25px;margin: 20px 0;">
+                                        <div class="card-header py-3" style="border-top-left-radius: 25px;border-top-right-radius: 25px;">
+                                            <p class="text-primary m-0 font-weight-bold">Địa chỉ liên lạc</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="form-user-address" name="form-user-address" action="#">
+                                            {% csrf_token %}
+                                                <div class="form-group"><label for="province"><strong>Tỉnh/Thành phố</strong></label>
+                                                    <input name="province" {% if customer.province %}
+                                                                value="{{ customer.province }}"
+                                                            {% endif %}
+                                                            class="form-control" type="text" id="address" placeholder="Hiển thị trên trang thông tin của bạn" ></div>
+                                                <div class="form-group"><label for="district"><strong>Huyện/Quận</strong></label>
+                                                    <input name="district" {% if customer.district %}
+                                                                value="{{ customer.district }}"
+                                                            {% endif %}
+                                                            class="form-control" type="text" id="address-1" placeholder="Sunset Blvd, 38" ></div>
+                                                <div class="form-group"><label for="commune"><strong>Phường/Xã</strong><br></label>
+                                                    <input name="commune" {% if customer.commune %}
+                                                                value="{{ customer.commune }}"
+                                                            {% endif %}
+                                                            class="form-control" type="text" id="address" placeholder="Sunset Blvd, 38" >
+                                                </div>
+                                                <div class="form-group">
+                                                    <button class="btn btn-primary btn-sm" type="submit">Lưu địa chỉ</button>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div id="notification_change_address">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div><!-- End: address -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End: col-user-info -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    {% endblock content %}

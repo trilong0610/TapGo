@@ -1,0 +1,74 @@
+{% extends 'tapme/base.html' %}
+
+{% block navbar %}
+    <nav class="navbar navbar-light navbar-expand-md" style="margin: 20px 40px;">
+                    <div class="container-fluid"><a class="navbar-brand" href="#" style="color: var(--light);font-size: 35px;">TapGo</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                        <div class="collapse navbar-collapse" id="navcol-1">
+                            <ul class="navbar-nav justify-content-around ml-auto" style="width: 30%;">
+                                <li class="nav-item text-center"><a class="nav-link active" href="{% url 'tapme:index' %}" style="color: var(--light);">Trang chủ</a></li>
+                                <li class="nav-item text-center"><a class="nav-link" href="{% url 'tapme:index' %}" style="color: var(--light);">Liên hệ</a></li>
+                                <li class="nav-item text-center" style="background: #313437;border-radius: 30px;padding: 0 10px;"><a class="nav-link" href="{% url 'tapme:login' %}" style="color: var(--light);">Đăng nhập</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid shadow-none" style="padding: 0 0;padding-bottom: 5px;">
+                    <!-- Start: form-login -->
+                    <div class="row d-flex justify-content-lg-center mb-3" style="margin: 0 auto;width: 100%;">
+                        <div class="col col-sm-2 col-12 col-md-3"></div>
+                        <div class="col-lg-4 col-12 col-sm-8 col-md-6">
+                            <div class="shadow-sm p-5" style="border-radius: 25px;background: var(--white);">
+                                <div class="text-center">
+                                    <h4 class="text-dark mb-4" style="color: rgb(0,0,0);">Tạo tài khoản mới</h4>
+                                </div>
+                                <form method="post" class="user" style="margin-top: 40px;">
+                                    {% csrf_token %}
+                                    <!-- Start: user -->
+                                    <div class="form-group row">
+                                        <input name="username" class="form-control form-control-user" type="text" placeholder="Tên đăng nhập">
+                                    </div><!-- End: user -->
+                                    <!-- Start: name -->
+                                    <div class="form-group row">
+                                        <input name="email" class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email"></div><!-- End: name -->
+                                    <!-- Start: name -->
+                                    <div class="form-group row">
+                                        <input name="card_id" class="form-control form-control-user" type="number" placeholder="Mã số thẻ của bạn"></div><!-- End: name -->
+                                    <!-- Start: name -->
+                                    <div class="form-group row">
+                                        <input name="password" class="form-control form-control-user" type="password" placeholder="Mật khẩu"></div><!-- End: name -->
+                                    <!-- Start: name -->
+                                    <div class="form-group row">
+                                        <input name="repeat_password" class="form-control form-control-user" type="password" placeholder="Nhập lại mật khẩu"></div><!-- End: name -->
+                                    <button class="btn btn-primary btn-block text-center text-white btn-user" type="submit" style="margin-top: 40px;">Tạo tài khoản</button>
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            {% if message.tags == 'error' %}
+                                                <div class="alert alert-danger text-center" role="alert" style="margin: 20px">
+                                                    {{ message }}
+                                                </div>
+                                            {% endif %}
+                                            {% if message.tags == 'success' %}
+                                                <div class="alert alert-success text-center" role="alert" style="margin: 20px">
+                                                    {{ message }}
+                                                </div>
+                                            {% endif %}
+                                            {% if message.tags == 'info' %}
+                                                <div class="alert alert-info text-center" role="alert" style="margin: 20px">
+                                                    {{ message }}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                    <hr>
+                                </form>
+                                <div class="text-center"><a class="small" href="{% url 'tapme:login' %}">Đã có tài khoản? Đăng nhập ngay!</a></div>
+                            </div>
+                        </div>
+                        <div class="col col-sm-2 col-12 col-md-3"></div>
+                    </div><!-- End: form-login -->
+                </div>
+{% endblock %}
+

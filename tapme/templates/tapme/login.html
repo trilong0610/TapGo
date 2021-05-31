@@ -1,0 +1,60 @@
+{% extends 'tapme/base.html' %}
+{% load humanize %}
+{% load static %}
+
+
+{% block navbar %}
+    <nav class="navbar navbar-light navbar-expand-md" style="margin: 20px 40px;">
+                    <div class="container-fluid"><a class="navbar-brand" href="{% url 'tapme:index' %}" style="color: var(--light);font-size: 35px;">TapGo</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                        <div class="collapse navbar-collapse" id="navcol-1">
+                            <ul class="navbar-nav justify-content-around ml-auto" style="width: 30%;">
+                                <li class="nav-item text-center"><a class="nav-link active" href="{% url 'tapme:index' %}" style="color: var(--light);">Trang chủ</a></li>
+                                <li class="nav-item text-center"><a class="nav-link" href="{% url 'tapme:index' %}" style="color: var(--light);">Liên hệ</a></li>
+                                <li class="nav-item text-center" style="background: #313437;border-radius: 30px;padding: 0 10px;"><a class="nav-link" href="{% url 'tapme:register' %}" style="color: var(--light);">Đăng ký</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid shadow-none" style="padding: 0 0;padding-bottom: 5px;">
+                    <!-- Start: row-form-login -->
+                    <div class="row d-flex justify-content-lg-center mb-3" style="margin: 0 auto;width: 100%;">
+                        <div class="col-lg-4 col-sm-2 col-12 col-md-3"></div>
+                        <div class="col-lg-4 col-12 col-sm-8 col-md-6">
+                            <div class="shadow-sm p-5" style="border-radius: 25px;background: var(--white);margin: 40px 0;">
+                                <div class="text-center">
+                                    <h4 class="text-dark mb-4" style="color: rgb(0,0,0);">Đăng nhập</h4>
+                                </div><!-- Start: form-login -->
+                                <form method="post" action="{% url 'tapme:login' %}" class="user" style="margin-top: 40px;">
+                                    {% csrf_token %}
+                                    <!-- Start: user -->
+                                    <div class="form-group row">
+                                        <input name="username" id="loginUsername" class="form-control form-control-user" type="text" placeholder="Tên đăng nhập">
+                                    </div><!-- End: user -->
+                                    <!-- Start: pass -->
+                                    <div class="form-group row">
+                                        <input name="password" id="loginPassword" class="form-control form-control-user" type="password" placeholder="Mật khẩu" >
+                                    </div><!-- End: pass -->
+                                    <!-- Start: btn-login -->
+                                    <button class="btn btn-primary btn-block text-white btn-user" type="submit" style="margin-top: 40px;">
+                                        Đăng nhập
+                                    </button><!-- End: btn-login -->
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                                <div class="alert alert-danger" role="alert" style="margin: 20px">
+                                                    {{ message }}
+                                                </div>
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    <hr>
+                                </form><!-- End: form-login -->
+                                <div class="text-center"><a class="small" href="{% url 'tapme:reset_password' %}">Quên mật khẩu?</a></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-2 col-12 col-md-3"></div>
+                    </div><!-- End: row-form-login -->
+                </div>
+{% endblock %}
