@@ -25,6 +25,35 @@ $("#form-user-address").submit(function(e) {
 
 });
 
+    // Cap nhat avatar
+// $("#form-user-avatar").submit(function(e) {
+//         e.preventDefault(); // avoid to execute the actual submit of the form.
+//         var formData = new FormData($('#form-user-avatar')[0]);
+//         formData.append('user_avatar', $('input[type=file]')[0].files[0]);
+//         formData.append('x', $('input[type=hidden]')[0].val());
+//         formData.append('y', $('input[type=hidden]')[0].val());
+//         formData.append('width', $('input[type=hidden]')[0].val());
+//         formData.append('height', $('input[type=hidden]')[0].val());
+//         var url = '/customer/change_avatar/'
+//
+//         $.ajax({
+//                type: "POST",
+//                url: url,
+//                data: formData,
+//                 contentType: false,
+//                 processData: false,
+//                success: function(data)
+//                {
+//                     window.location.reload(true);
+//
+//                },
+//                 error: function (data) {
+//                     showToastr(data);
+//                 },
+//          })
+//     });
+
+
 $("#form-user-info").submit(function(e) {
 
     e.preventDefault(); // avoid to execute the actual submit of the form.
@@ -48,34 +77,7 @@ $("#form-user-info").submit(function(e) {
 
 });
 
-// Cap nhat avatar
-$("#form-user-avatar").submit(function(e) {
 
-    e.preventDefault(); // avoid to execute the actual submit of the form.
-    var formData = new FormData($('#form-user-avatar')[0]);
-
-    formData.append('user_avatar', $('input[type=file]')[0].files[0]);
-    var url = '/customer/change_avatar/'
-
-    $.ajax({
-           type: "POST",
-           url: url,
-           data: formData,
-            contentType: false,
-            processData: false,
-           success: function(data)
-           {
-                window.location.reload(true);
-
-           },
-            error: function (data) {
-                showToastr(data);
-            },
-         })
-
-
-
-});
 
 // Add the following code if you want the name of the file appear on select
 $(".custom-file-input").on("change", function() {
@@ -134,3 +136,59 @@ function showToastr(data) {
 
 }
 // -------------ENDTOAST-----------------
+
+//--------CROP AVATAR---------
+      /* SCRIPT TO OPEN THE MODAL WITH THE PREVIEW */
+      $("#user_avatar").change(function () {
+        if (this.files && this.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $("#image").attr("src", e.target.result);
+            $("#modalCrop").modal("show");
+          }
+          reader.readAsDataURL(this.files[0]);
+        }
+      });
+
+      /* SCRIPTS TO HANDLE THE CROPPER BOX */
+      var $image = $("#image");
+      var cropBoxData;
+      var canvasData;
+      $("#modalCrop").on("shown.bs.modal", function () {
+        $image.cropper({
+          viewMode: 1,
+          aspectRatio: 1/1,
+          minCropBoxWidth: 720,
+          minCropBoxHeight: 720,
+            cropBoxResizable: false,
+          ready: function () {
+            $image.cropper("setCanvasData", canvasData);
+            $image.cropper("setCropBoxData", cropBoxData);
+          }
+        });
+      }).on("hidden.bs.modal", function () {
+        cropBoxData = $image.cropper("getCropBoxData");
+        canvasData = $image.cropper("getCanvasData");
+        $image.cropper("destroy");
+      });
+
+      $(".js-zoom-in").click(function () {
+        $image.cropper("zoom", 0.1);
+      });
+
+      $(".js-zoom-out").click(function () {
+        $image.cropper("zoom", -0.1);
+      });
+
+      /* SCRIPT TO COLLECT THE DATA AND POST TO THE SERVER */
+      $(".js-crop-and-upload").click(function () {
+        var cropData = $image.cropper("getData");
+        $("#id_x").val(cropData["x"]);
+        $("#id_y").val(cropData["y"]);
+        $("#id_height").val(cropData["height"]);
+        $("#id_width").val(cropData["width"]);
+        $("#form-user-avatar").submit();
+        });
+
+
+//--------END CROP AVATAR---------

@@ -2,10 +2,13 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
+from PIL import Image
 
 import customer
+from teont import settings
+from .forms import PhotoForm
 from .models import InfoUser,UserSocial,Social
 # Create your views here.
 from django.views import View
@@ -18,13 +21,16 @@ class Profile(LoginRequiredMixin,View):
         user = request.user
         customer, created = InfoUser.objects.get_or_create(user=user)
         social = UserSocial.objects.filter(user=user)
+        form = PhotoForm()
         context = {
             'customer':customer,
-            'socials': social
+            'socials': social,
+            'form':form,
         }
         return render(request, "customer/customer_profile.html", context);
     def post(self, request):
         username = request.POST['username']
+
 
 class Social(LoginRequiredMixin,View):
     login_url = '/login/'
@@ -151,19 +157,27 @@ class ChangeAvatar(View):
         if "user_avatar" in request.FILES:
             customer = InfoUser.objects.get(user=request.user)
             social = UserSocial.objects.filter(user=request.user)
+            # Lấy file từ request
             myfile = request.FILES["user_avatar"]
+
             fs = FileSystemStorage()
             filename = fs.save(myfile.name, myfile)
-            uploaded_file_url = fs.url(filename)
-            customer.avatar = request.FILES.get('user_avatar', False)
+
+            uploaded_file_url = fs.path(filename)
+
+
+            x = float(request.POST["x"])
+            y = float(request.POST["y"])
+            w = float(request.POST["width"])
+            h = float(request.POST["height"])
+
+            image = Image.open(uploaded_file_url)
+            cropped_image = image.crop((x, y, w + x, h + y))
+            resized_image = cropped_image.resize((720, 720), Image.ANTIALIAS)
+            resized_image.save(uploaded_file_url)
+            customer.avatar.delete();
+            customer.avatar =  uploaded_file_url
             customer.save();
-            data = {
-                'tag': 'success',
-                'data': 'Thay đổi ảnh đại diện thành công'
-            }
-            return JsonResponse(data)
-        data = {
-            'tag': 'error',
-            'data': 'Thay đổi ảnh đại diện thất bại'
-        }
-        return JsonResponse(data)
+            return redirect('tapme:customer:customer_profile')
+        else:
+            return redirect('tapme:page_404')

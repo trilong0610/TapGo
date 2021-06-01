@@ -33,16 +33,42 @@
                             <div class="card mb-3" style="border-radius: 25px;background: #ffffff;">
                                 <div class="card-body text-center shadow" style="border-radius: 25px;border-style: none;">
 
-                                    <form id="form-user-avatar" method="post" enctype="multipart/form-data">
+                                    <!-- USER AVATAR -->
+                                    <form id="form-user-avatar" action="{% url 'tapme:customer:change_avatar' %}" method="post" enctype="multipart/form-data">
                                         {% csrf_token %}
                                         <img class="rounded-circle mb-3 mt-4" src="{{ customer.avatar.url|default_if_none:"#" }}" width="160" height="160" style="background-size: contain;">
                                         <div class="custom-file mb-3 mt-4">
-                                            <input class="custom-file-input" type="file" name="user_avatar">
-                                            <label class="custom-file-label" for="customFile">Choose file</label>
+                                            <input class="custom-file-input" type="file" name="user_avatar" id="user_avatar">
+                                            <input type="hidden" name="x" id="id_x">
+                                            <input type="hidden" name="y" id="id_y">
+                                            <input type="hidden" name="width" id="id_width">
+                                            <input type="hidden" name="height" id="id_height">
+                                            <label class="custom-file-label" for="user_avatar">Cập nhật ảnh đại diện</label>
                                         </div>
-                                        <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Lưu ảnh đại diện</button></div>
                                     </form>
 
+                                    <!-- MODAL TO CROP THE IMAGE -->
+                                    <div class="modal fade" id="modalCrop">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-body">
+                                              <img src="" id="image" style="max-width: 100%;">
+                                            </div>
+                                            <div class="modal-footer">
+                                              <div class="btn-group pull-left" role="group">
+                                                <button type="button" class="btn btn-default js-zoom-in">
+                                                  <span class="glyphicon glyphicon-zoom-in"></span>
+                                                </button>
+                                                <button type="button" class="btn btn-default js-zoom-out">
+                                                  <span class="glyphicon glyphicon-zoom-out"></span>
+                                                </button>
+                                              </div>
+                                              <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
+                                              <button type="button" class="btn btn-primary js-crop-and-upload">Tải lên</button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
                                 </div>
                             </div><!-- End: avatar -->
                             <div class="card mb-3"></div><!-- Start: user-social -->

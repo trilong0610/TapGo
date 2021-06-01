@@ -12,7 +12,7 @@ urlpatterns = [
     path('logout/', views.Logout.as_view(),name='logout'),
     path('register/', views.Register.as_view(),name='register'),
     path('reset-password/', views.ResetPassword.as_view(),name='reset_password'),
-
+    path('404/', views.Page_404.as_view(),name="page_404"),
 
 ]
 

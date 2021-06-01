@@ -39,8 +39,6 @@ class Login(View):
             messages.error(request, 'Sai tài khoản hoặc mật khẩu!')
             return render(request, "tapme/login.html", {});
 
-
-
 class ChangeInfoUser(View):
     def post(self, request):
         username = request.POST['username']
@@ -108,6 +106,11 @@ class Logout(View):
     def get(self, request):
         logout(request)
         return redirect('tapme:index')
+
+class Page_404(View):
+    def get(self, request):
+        return render(request, 'tapme/page_system_404.html',{})
+
 
 def is_email_exist(email):
     if User.objects.filter(email=email).exists():

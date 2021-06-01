@@ -24,7 +24,6 @@ class InfoUser(models.Model):
             url = ''
         return url
 
-
 class UserSocial(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True, null=True)
     social = models.ForeignKey(Social, on_delete=models.CASCADE,blank=True, null=True)
