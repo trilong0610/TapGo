@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -5,14 +6,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Table - Brand</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
-    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/ionicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome5-overrides.min.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-    <link rel="stylesheet" href="assets/css/Social-Icons.css">
+    <link rel="stylesheet" href="{% static 'css/Social-Icons.css' %}">
 </head>
 
 <body id="page-top">
@@ -24,41 +25,194 @@
                         <div class="col col-1 col-sm-2"></div><!-- Start: col-content -->
                         <div class="col col-12 col-sm-8" style="background: var(--white);border-radius: 25px;">
                             <!-- Start: avatar -->
-                            <div class="text-center" style="padding: 10px 10px;padding-top: 30px;"><img class="rounded-circle img-fluid border border-light shadow-sm" src="assets/img/avatars/avatar2.jpeg" style="width: 120px;height: 120px;"></div><!-- End: avatar -->
+                            <div class="text-center" style="padding: 10px 10px;padding-top: 30px;">
+                                <img class="rounded-circle img-fluid border border-light shadow-sm" src="{{ customer.avatar.url }}" style="width: 120px;height: 120px;"></div><!-- End: avatar -->
                             <!-- Start: names -->
-                            <div class="text-center" style="font-size: 25px;color: #131313;text-align: center;"><span>Nguyễn Tri Long Nguyễn</span></div><!-- End: names -->
+                            <div class="text-center" style="font-size: 25px;color: #131313;text-align: center;"><span>{{ customer.user.first_name }}</span></div><!-- End: names -->
                             <!-- Start: namesub -->
-                            <div class="text-center" style="font-size: 25px;color: #131313;text-align: center;margin-top: -10px;"><span style="font-size: 20px;">(Tèo)</span></div><!-- End: namesub -->
+                            <div class="text-center" style="font-size: 25px;color: #131313;text-align: center;margin-top: -10px;"><span style="font-size: 20px;">{{ customer.sub_name }}</span></div><!-- End: namesub -->
                             <!-- Start: location -->
-                            <div class="text-center" style="font-size: 25px;color: #131313;text-align: center;"><i class="fa fa-location-arrow"></i><span style="font-size: 15px;margin: 0 10px;">TP.HCM</span></div><!-- End: location -->
+                            <div class="text-center" style="font-size: 25px;color: #131313;text-align: center;"><i class="fa fa-location-arrow"></i><span style="font-size: 15px;margin: 0 10px;">{{ customer.province }}</span></div><!-- End: location -->
                             <!-- Start: button -->
-                            <div class="text-center" style="font-size: 25px;color: #131313;text-align: center;margin-top: 20px;"><button class="btn btn-primary shadow-sm" type="button" style="font-size: 10px;">Lưu số điện thoại</button></div><!-- End: button -->
+                            <div class="text-center" style="font-size: 25px;color: #131313;text-align: center;margin-top: 20px;">
+                                <button class="btn btn-primary shadow-sm" type="button" style="font-size: 10px;">Lưu số điện thoại</button>
+                            </div><!-- End: button -->
                             <!-- Start: line -->
                             <div style="margin-top: 10px;margin-bottom: 20px;">
                                 <div class="card"></div>
                             </div><!-- End: line -->
                             <!-- Start: url -->
                             <div class="row" style="border-radius: 10px;padding-bottom: 20px;">
+                                {% for userSocial in userSocial %}
+
+                                {% endfor %}
+{#                            1 INSTAGRAM #}
                                 <div class="col col-sm-6 col-12" style="margin: 10px 0;">
                                     <div class="card shadow-sm">
-                                        <div class="card-body text-center"><i class="fab fa-facebook"></i><span class="text-center" style="margin: 0px 20px;">Facebook</span></div>
+                                        <div class="card-body text-center">
+                                            <a href="instagram://user?username=kimchunqg">
+                                                <img class="icon" src="{{ userSocial.social.img.url|default_if_none:"#" }}"
+                                                       style="margin: 5px 10px;margin-left:
+                                                       20px;width: 30px;height: 30px;"></img>
+                                                <span class="text-center" style="margin: 0px 20px;">INSTAGRAM</span>
+                                            </a>
+                                        </div>
+
+
                                     </div>
                                 </div>
-                                <div class="col col-sm-6 col-12" style="margin: 10px 0;">
+{#                            2  FACEBOOK#}
+                            <div class="col col-sm-6 col-12" style="margin: 10px 0;">
                                     <div class="card shadow-sm">
-                                        <div class="card-body text-center"><i class="fab fa-facebook"></i><span class="text-center" style="margin: 0px 20px;">Facebook</span></div>
+                                        <div class="card-body text-center">
+                                            <a href="fb://profile/100004783964504">
+                                                <img class="icon" src="{{ userSocial.social.img.url|default_if_none:"#" }}"
+                                                       style="margin: 5px 10px;margin-left:
+                                                       20px;width: 30px;height: 30px;"></img>
+                                                <span class="text-center" style="margin: 0px 20px;">FACBOOK</span>
+                                            </a>
+                                        </div>
+
+
                                     </div>
                                 </div>
-                                <div class="col col-sm-6 col-12" style="margin: 10px 0;">
+{#                            3   MOMO NOT ACTI#}
+                            <div class="col col-sm-6 col-12" style="margin: 10px 0;">
                                     <div class="card shadow-sm">
-                                        <div class="card-body text-center"><i class="fab fa-facebook"></i><span class="text-center" style="margin: 0px 20px;">Facebook</span></div>
+                                        <div class="card-body text-center">
+                                            <a href="momo://?username=0914393312">
+                                                <img class="icon" src="{{ userSocial.social.img.url|default_if_none:"#" }}"
+                                                       style="margin: 5px 10px;margin-left:
+                                                       20px;width: 30px;height: 30px;"></img>
+                                                <span class="text-center" style="margin: 0px 20px;">MOMO</span>
+                                            </a>
+                                        </div>
+
+
                                     </div>
                                 </div>
-                                <div class="col col-sm-6 col-12" style="margin: 10px 0;">
+{#                            4 TIKTOK #}
+                            <div class="col col-sm-6 col-12" style="margin: 10px 0;">
                                     <div class="card shadow-sm">
-                                        <div class="card-body text-center"><i class="fab fa-facebook"></i><span class="text-center" style="margin: 0px 20px;">Facebook</span></div>
+                                        <div class="card-body text-center">
+                                            <a href="snssdk1233://user/profile/a_hizomi">
+                                                <img class="icon" src="{{ userSocial.social.img.url|default_if_none:"#" }}"
+                                                       style="margin: 5px 10px;margin-left:
+                                                       20px;width: 30px;height: 30px;"></img>
+                                                <span class="text-center" style="margin: 0px 20px;">TIKTOK</span>
+                                            </a>
+                                        </div>
+
+
                                     </div>
                                 </div>
+{#                            5  TELEGRAM#}
+                            <div class="col col-sm-6 col-12" style="margin: 10px 0;">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body text-center">
+                                            <a href="tg://resolve?domain=trilong0610">
+                                                <img class="icon" src="{{ userSocial.social.img.url|default_if_none:"#" }}"
+                                                       style="margin: 5px 10px;margin-left:
+                                                       20px;width: 30px;height: 30px;"></img>
+                                                <span class="text-center" style="margin: 0px 20px;">TELEGRAM</span>
+                                            </a>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+{#                            6  TWitter#}
+                            <div class="col col-sm-6 col-12" style="margin: 10px 0;">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body text-center">
+                                            <a href="twitter://user?screen_name=trilong0610">
+                                                <img class="icon" src="{{ userSocial.social.img.url|default_if_none:"#" }}"
+                                                       style="margin: 5px 10px;margin-left:
+                                                       20px;width: 30px;height: 30px;"></img>
+                                                <span class="text-center" style="margin: 0px 20px;">TWITTER</span>
+                                            </a>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+{#                            7  Gmail#}
+                            <div class="col col-sm-6 col-12" style="margin: 10px 0;">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body text-center">
+                                            <a href="googlegmail://co?to=trilong0610@gmail.com&subject=HI&body=Let Friend">
+                                                <img class="icon" src="{{ userSocial.social.img.url|default_if_none:"#" }}"
+                                                       style="margin: 5px 10px;margin-left:
+                                                       20px;width: 30px;height: 30px;"></img>
+                                                <span class="text-center" style="margin: 0px 20px;">Gmail</span>
+                                            </a>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+{#                            8  MAIL IOS#}
+                            <div class="col col-sm-6 col-12" style="margin: 10px 0;">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body text-center">
+                                            <a href="mailto:trilong0610@gmail.com">
+                                                <img class="icon" src="{{ userSocial.social.img.url|default_if_none:"#" }}"
+                                                       style="margin: 5px 10px;margin-left:
+                                                       20px;width: 30px;height: 30px;"></img>
+                                                <span class="text-center" style="margin: 0px 20px;">MAIL IOS</span>
+                                            </a>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+{#                            9  PHONE IOS#}
+                            <div class="col col-sm-6 col-12" style="margin: 10px 0;">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body text-center">
+                                            <a href="tel:0374234303">
+                                                <img class="icon" src="{{ userSocial.social.img.url|default_if_none:"#" }}"
+                                                       style="margin: 5px 10px;margin-left:
+                                                       20px;width: 30px;height: 30px;"></img>
+                                                <span class="text-center" style="margin: 0px 20px;">PHONE IOS</span>
+                                            </a>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+{#                            10  PRINTEREST#}
+                            <div class="col col-sm-6 col-12" style="margin: 10px 0;">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body text-center">
+                                            <a href="pinterest://user/teont0610">
+                                                <img class="icon" src="{{ userSocial.social.img.url|default_if_none:"#" }}"
+                                                       style="margin: 5px 10px;margin-left:
+                                                       20px;width: 30px;height: 30px;"></img>
+                                                <span class="text-center" style="margin: 0px 20px;">PRINTEREST</span>
+                                            </a>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+{#                            11  ZALO#}
+                            <div class="col col-sm-6 col-12" style="margin: 10px 0;">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body text-center">
+                                            <a href="https://zalo.me/0978834811">
+                                                <img class="icon" src="{{ userSocial.social.img.url|default_if_none:"#" }}"
+                                                       style="margin: 5px 10px;margin-left:
+                                                       20px;width: 30px;height: 30px;"></img>
+                                                <span class="text-center" style="margin: 0px 20px;">ZALO</span>
+                                            </a>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
                             </div><!-- End: url -->
                         </div><!-- End: col-content -->
                         <div class="col col-1 col-sm-2"></div>
@@ -72,11 +226,11 @@
             <div class="text-center my-auto copyright"><span>Copyright © Nguyễn Tri Long</span></div>
         </div>
     </footer>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/bs-init.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-    <script src="assets/js/theme.js"></script>
+    <script src="{% static 'js/theme.js' %}"></script>
 </body>
 
 </html>

@@ -4,11 +4,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Model
-from django.http import request
+from django.http import request, HttpRequest
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.views import View
+from pyngrok import ngrok
 
 from card.models import Card
 from customer.models import InfoUser
@@ -130,3 +131,7 @@ def is_empty_card_id(id):
         return True
     else:
         return False
+
+# http_tunnel = ngrok.connect(8000).public_url
+# tunnels = ngrok.get_tunnels()
+# print(tunnels)

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-fk+zibz0s-z-x3s%fjqx_91p&#vzy-am7nbn9rzt-rns4-mdo0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'tapme',
+    'card',
     'customer',
     'social',
-    'card',
     'multimedia',
 ]
 
