@@ -41,32 +41,81 @@
                 </nav><!-- End: navbar -->
 
                 <div class="container-fluid shadow-sm" style="border-radius: 25px;background: #f4f4fc;width: 98%;padding-bottom: 10px;">
+                    <h3 class="text-center text-dark mb-4" style="padding: 30px 20px;padding-bottom: 15px;">Quản lí mạng xã hội</h3>
+                    <!-- Start: colapse-add-new-social -->
+                    <div style="padding: 20px 0;">
+                        <!-- Button trigger modal -->
 
+                        <!-- Modal ADD SOCIAL -->
+                        <div class="modal fade" id="addSocialModalCenter"
+                                tabindex="-1" role="dialog"
+                                aria-labelledby="addSocialModalCenterTitle"
+                                aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="addSocialModalLongTitle">Thêm mạng xã hội mới</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                            <form method="post" id="form_customer_social_add_social">
+                                {% csrf_token %}
 
-                    <h3 class="text-center text-dark mb-4" style="padding: 30px 20px;padding-bottom: 15px;">Quản lí mạng xã hội</h3><!-- Start: colapse-add-new-social -->
-                    <div style="padding: 20px 0;"><a class="btn btn-primary text-capitalize text-center" data-toggle="collapse" aria-expanded="false"
-                                                     aria-controls="collapse-100" href="#collapse-100" role="button" style="background: #131313;border-style: none;margin-left: 20px;">Thêm mạng xã hội mới</a>
-                        <div class="collapse" id="collapse-100" style="margin: 20px 0;margin-left: 20px;">
-                            <div class="card" style="padding: 20px 20px;">
-                                <form><label style="margin: 15px 0;">Chọn mạng xã hội</label>
-                                    <div class="dropdown"><button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button"><i class="fa fa-star" style="margin: 0 10px;"></i>Facebook</button>
-                                        <div class="dropdown-menu" style="padding: 0 20px;"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a>
-                                            <div class="dropdown-divider"></div>
+                                <div class="modal-body">
+
+                                <!-- DROPDOWN MENU  -->
+                                    <div class="ui fluid selection dropdown" style="margin: 10px 0px">
+                                            <!-- input social id  -->
+                                          <input type="hidden" name="social_id"
+                                                 id="input_customer_social_social_id">
+                                          <i class="dropdown icon"></i>
+                                          <div class="default text">Chọn mạng xã hội</div>
+                                          <div class="menu">
+                                            {% for social in socials %}
+                                                {% if social in socials %}
+                                                    <div class="item" data-value="{{ social.id }}" data-text="{{ social.name }}">
+                                                      <img class="ui mini avatar image" src="{{ social.img.url|default_if_none:"#" }}">
+                                                      {{ social.name }}
+                                                    </div>
+                                                {% endif %}
+
+                                            {% endfor %}
+
+                                          </div>
                                         </div>
-                                    </div><label style="margin: 15px 0;">Tên mạng xã hội</label><input class="form-control" type="url" style="max-width: 500px;margin: 10px 0;"><label style="margin: 15px 0;">Thêm liên kết</label><input class="form-control" type="url" style="max-width: 500px;margin: 10px 0;"><button class="btn btn-primary" type="button" style="margin: 10px auto;">Lưu</button>
-                                </form>
+                                    <input name="social_url"
+                                           id="input_customer_social_social_url"
+                                           class="form-control" type="text"
+                                           maxlength="10"
+                                           style="margin: 20px 0px">
+
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
+                              </div>
+                            </form>
                             </div>
+                          </div>
                         </div>
-                    </div><!-- End: colapse-add-new-social -->
+
+                    </div>
                     <div class="card shadow-sm mb-3" style="margin: 10px 10px;margin-right: 10px;margin-left: 10px;border-radius: 25px;margin-bottom: 10px;">
                         <div class="card-header py-3" style="border-top-left-radius: 25px;border-top-right-radius: 25px;">
-
-                            <!------------- LIST SOCIAL ---------------------------------->
                             <p class="text-primary m-0 font-weight-bold">Danh sách mạng xã hội</p>
                         </div>
                         <div class="card-body">
                             <div class="row">
-
+                                <div class="col-8 col-md-12 pulse animated">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSocialModalCenter" style="margin: 0px 10px">
+                                        <i class="fas fa-link" style="margin-right: 5px"></i>
+                                        Thêm mạng xã hội
+                                    </button>
+                                </div>
+                            </div>
+                        <!------------- DANH SÁCH MẠNG XÃ HỘI HIỆN TẠI ---------------------------------->
+                            <div class="row">
                                     {% for social in social_customer %}
                                         <div class="col-12 col-md-6 pulse animated" style="padding: 5px 20px;">
                                         <!-- Start: Collapsible Card -->
@@ -81,17 +130,24 @@
                                                        20px;width: 30px;height: 30px;"></img>
                                                     {{ social.social.name }}
                                                 </a>
-                                                <div class="collapse" id="collapse-{{ social.social.id }}" style="padding: 20px 20px;">
+
+                                                <div class="collapse collapse_customer_social" id="collapse-{{ social.social.id }}" style="padding: 20px 20px;">
                                                     <label style="margin: 10px auto;">Liên kết</label>
-                                                    <form>
-                                                        <input class="form-control" type="url"
+                                                    <form id="form-customer-social-{{ social.social.id }}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="social_id" value="{{ social.social.id }}">
+                                                        <input class="form-control " type="url"
+                                                               name="social_url"
+                                                               data-id="{{ social.social.id }}"
+                                                               id="input-customer-social-url-change-{{ social.social.id }}"
                                                                style="max-width: 500px;width: 100%;margin: 10px" value="{{ social.url_social }}" >
                                                         <div class="d-flex flex-row flex-shrink-0 justify-content-around">
-                                                            <button class="btn btn-primary" type="button" style="width: 50%;background: rgb(4,158,57);border-style: none;margin: 5px 5px;">Lưu</button>
-                                                            <button class="btn btn-primary" type="button" style="width: 50%;background: var(--red);border-style: none;margin: 5px 5px;">Xóa&nbsp;</button>
+                                                            <button data-id="{{ social.social.id }}" class="btn btn-primary btn-customer-social-change" type="button" style="width: 50%;background: rgb(4,158,57);border-style: none;margin: 5px 5px;">Lưu</button>
+                                                            <button data-id="{{ social.social.id }}" class="btn btn-primary btn-customer-social-delete" type="button" style="width: 50%;background: var(--red);border-style: none;margin: 5px 5px;">Xóa&nbsp;</button>
                                                         </div>
                                                     </form>
                                                 </div>
+
                                             </div><!-- End: Collapsible Card -->
                                         </div>
                                     {% endfor %}
@@ -104,6 +160,8 @@
                 </div>
             </div>
 
-        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+        </div>
+        <a class="border rounded d-inline scroll-to-top" href="#page-top">
+        <i class="fas fa-angle-up"></i></a>
     {% endblock content %}
 

@@ -8,15 +8,3 @@ class Social(models.Model):
 
     def __str__(self):
         return str(self.name)
-
-    @property
-    def imageURL(self):
-        try:
-            url = self.image.url
-        except:
-            url = ''
-        return url
-
-    @property
-    def get_all_social(self):
-        return Social.objects.all()

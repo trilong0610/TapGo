@@ -29,7 +29,6 @@ class UserSocial(models.Model):
     social = models.ForeignKey(Social, on_delete=models.CASCADE,blank=True, null=True)
     url_social = models.CharField(max_length=10000,null=True, blank=True)
     date_add = models.DateTimeField(auto_now_add=True)
-    card = models.ForeignKey(Card, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.user.username

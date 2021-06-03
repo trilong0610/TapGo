@@ -6,17 +6,18 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from PIL import Image
 
+import validators
 import customer
+from social.models import Social
 from teont import settings
 from .forms import PhotoForm
-from .models import InfoUser,UserSocial,Social
+from .models import InfoUser,UserSocial
 # Create your views here.
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-
-class Profile(LoginRequiredMixin,View):
-    login_url = '/login/'
+class ViewProfile(LoginRequiredMixin,View):
+    login_url = 'tapme//login/'
     def get(self,request):
         user = request.user
         customer, created = InfoUser.objects.get_or_create(user=user)
@@ -31,20 +32,28 @@ class Profile(LoginRequiredMixin,View):
     def post(self, request):
         username = request.POST['username']
 
-
-class Social(LoginRequiredMixin,View):
-    login_url = '/login/'
+class ViewSocial(LoginRequiredMixin,View):
+    login_url = 'tapme//login/'
     def get(self,request):
         user = User.objects.get(username=request.user.username)
         customer, created = InfoUser.objects.get_or_create(user=user)
         social_customer = user.usersocial_set.all()
+
+        # Lấy danh sách id những social đã liên kết của user hiện tại
+        list_id_social_customer = user.usersocial_set.all().values_list('social__id', flat=True)
+
+        # Lọc ra những social chưa liên kết với user, tránh liên kết trùng lặp 1 social 2 lần
+        socials = Social.objects.exclude(id__in=list_id_social_customer)
+
         context = {
             'customer': customer,
             'social_customer': social_customer,
+            'socials':socials
         }
         return render(request, "customer/customer_social.html", context);
 
-class ChangePassword(View):
+class ChangePassword(LoginRequiredMixin,View):
+    login_url = 'tapme/login/'
     def get(self,request):
         context = {}
         return render(request, "tapme/change_password.html", context);
@@ -72,7 +81,8 @@ class ChangePassword(View):
                 messages.success(request, 'Thay đổi mật khẩu thành công')
                 return render(request, "tapme/change_password.html", {});
 
-class ChangeInfoUser(View):
+class ChangeInfoUser(LoginRequiredMixin,View):
+    login_url = 'tapme/login/'
     def get(self, request):
         customer = InfoUser.objects.get(user=request.user)
         context = {'customer': customer}
@@ -130,7 +140,8 @@ class ChangeInfoUser(View):
         }
         return JsonResponse(data)
 
-class ChangeAddress(View):
+class ChangeAddress(LoginRequiredMixin,View):
+    login_url = 'tapme/login/'
     def get(self, request):
         return render(request, 'tapme/register.html',{})
     def post(self, request):
@@ -151,7 +162,8 @@ class ChangeAddress(View):
         }
         return JsonResponse(data)
 
-class ChangeAvatar(View):
+class ChangeAvatar(LoginRequiredMixin,View):
+    login_url = 'tapme/login/'
     def post(self, request):
         # Thay doi anh dai dien
         if "user_avatar" in request.FILES:
@@ -181,3 +193,125 @@ class ChangeAvatar(View):
             return redirect('tapme:customer:customer_profile')
         else:
             return redirect('tapme:page_404')
+
+class AddSocial(LoginRequiredMixin,View):
+    login_url = 'tapme/login/'
+    def post(self, request):
+
+        url_social = request.POST["social_url"]
+        social_id = int(request.POST["social_id"])
+        social = Social.objects.get(id=social_id)
+
+        if social_id == 2 or social_id == 4 or social_id == 10:
+
+            #     Tìm thấy social
+            if social:
+                user = User.objects.get(username=request.user.username)
+                user_social = UserSocial.objects.create(user=request.user, social=social,url_social=url_social)
+
+                # Lưu thành công
+                if user_social:
+                    user_social.save()
+                    context = {
+                        "tag": "success",
+                        "data": "Thêm mạng xã hội thành công"
+                    }
+                    return JsonResponse(context)
+
+                # Lưu thất bại
+                else:
+                    context = {
+                        "tag": "error",
+                        "data": "Không tìm thấy mạng xã hội"
+                    }
+                    return JsonResponse(context)
+
+            #     không tìm thấy social hoặc url không đúng format
+            else:
+                context = {
+                    "tag": "error",
+                    "data": "Không tìm thấy mạng xã hội"
+                }
+                return JsonResponse(context)
+
+        else:
+            #     Tìm thấy social và url đúng format
+            if social and validators.url(url_social):
+                user = User.objects.get(username=request.user.username)
+                user_social = UserSocial.objects.create(user=request.user, social=social, url_social=url_social)
+
+                # Lưu thành công
+                if user_social:
+                    user_social.save()
+                    context = {
+                        "tag": "success",
+                        "data": "Thêm mạng xã hội thành công"
+                    }
+                    return JsonResponse(context)
+
+                # Lưu thất bại
+                else:
+                    context = {
+                        "tag": "error",
+                        "data": "Không tìm thấy mạng xã hội"
+                    }
+                    return JsonResponse(context)
+
+            #     không tìm thấy social hoặc url không đúng format
+            else:
+                context = {
+                    "tag": "error",
+                    "data": "Định dạng liên kết không đúng"
+                }
+                return JsonResponse(context)
+
+class ChangeSocial(LoginRequiredMixin,View):
+    login_url = 'tapme/login/'
+    def post(self, request):
+        url_social = request.POST["social_url"]
+        social_id = int(request.POST["social_id"])
+        social = Social.objects.get(id=social_id)
+
+        user_social = UserSocial.objects.get(user=request.user, social_id=social_id)
+
+        if social_id == 2 or social_id == 4 or social_id == 10: # Những social dùng số điện thoại
+
+            #     Tìm thấy social
+            if user_social :
+                user_social.url_social = url_social
+                # Lưu thành công
+                user_social.save()
+                context = {
+                    "tag": "success",
+                    "data": "Cập nhật thành công"
+                }
+                return JsonResponse(context)
+                # Lưu thất bại
+            #     không tìm thấy social hoặc url không đúng format
+            else:
+                context = {
+                    "tag": "error",
+                    "data": "Không tìm thấy mạng xã hội"
+                }
+                return JsonResponse(context)
+
+        else:
+            #     Tìm thấy social và url đúng format
+            if user_social and validators.url(url_social):
+                user_social.url_social = url_social
+                # Lưu thành công
+                user_social.save()
+                context = {
+                    "tag": "success",
+                    "data": "Cập nhật thành công"
+                }
+                return JsonResponse(context)
+
+            #     không tìm thấy social hoặc url không đúng format
+            else:
+                context = {
+                    "tag": "error",
+                    "data": "Định dạng liên kết không đúng"
+                }
+                return JsonResponse(context)
+
