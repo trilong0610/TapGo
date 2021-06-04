@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 class Card(models.Model):
-    id = models.BigAutoField(primary_key=True)
+    id = models.CharField(max_length=255,primary_key=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):

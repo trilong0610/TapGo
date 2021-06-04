@@ -15,6 +15,8 @@ urlpatterns = [
     path('change_avatar/', views.ChangeAvatar.as_view(), name='change_avatar'),
     path('add_social/', views.AddSocial.as_view(), name='add_social'),
     path('change_social/', views.ChangeSocial.as_view(), name='change_social'),
+    path('delete_social/', views.DeleteSocial.as_view(), name='delete_social'),
+    path('demo/', views.Demo.as_view(), name='demo'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

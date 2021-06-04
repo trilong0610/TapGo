@@ -1,4 +1,9 @@
 {% extends 'customer/base.html' %}
+{% load static %}
+{% block css %}
+
+{% endblock %}
+
     {% block navbar %}
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: linear-gradient(140deg, #a770ef, #cf8bf3 30%, #fdb99b), rgb(235,235,245);color: rgb(19,19,19);border-style: none;">
             <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
@@ -69,9 +74,11 @@
                                             <!-- input social id  -->
                                           <input type="hidden" name="social_id"
                                                  id="input_customer_social_social_id">
+
                                           <i class="dropdown icon"></i>
                                           <div class="default text">Chọn mạng xã hội</div>
                                           <div class="menu">
+
                                             {% for social in socials %}
                                                 {% if social in socials %}
                                                     <div class="item" data-value="{{ social.id }}" data-text="{{ social.name }}">
@@ -93,7 +100,9 @@
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
-                                <button type="submit" class="btn btn-primary">Thêm</button>
+                                <button type="submit" id="btn_customer_social_submit_modal_add" class="btn btn-primary">
+                                    <p>Thêm</p>
+                                </button>
                               </div>
                             </form>
                             </div>
@@ -116,43 +125,43 @@
                             </div>
                         <!------------- DANH SÁCH MẠNG XÃ HỘI HIỆN TẠI ---------------------------------->
                             <div class="row">
-                                    {% for social in social_customer %}
-                                        <div class="col-12 col-md-6 pulse animated" style="padding: 5px 20px;">
-                                        <!-- Start: Collapsible Card -->
-                                            <div class="shadow-sm card" style="margin-top: 20px;">
-                                                <a class="btn btn-link text-left card-header font-weight-bold"
-                                                   data-toggle="collapse"
-                                                   aria-expanded="false"
-                                                   aria-controls="collapse-{{ social.social.id }}"
-                                                   href="#collapse-{{ social.social.id }}" role="button">
-                                                    <img class="icon" src="{{ social.social.img.url|default_if_none:"#" }}"
-                                                       style="margin: 5px 10px;margin-left:
-                                                       20px;width: 30px;height: 30px;"></img>
-                                                    {{ social.social.name }}
-                                                </a>
 
-                                                <div class="collapse collapse_customer_social" id="collapse-{{ social.social.id }}" style="padding: 20px 20px;">
-                                                    <label style="margin: 10px auto;">Liên kết</label>
-                                                    <form id="form-customer-social-{{ social.social.id }}">
-                                                        {% csrf_token %}
-                                                        <input type="hidden" name="social_id" value="{{ social.social.id }}">
-                                                        <input class="form-control " type="url"
-                                                               name="social_url"
-                                                               data-id="{{ social.social.id }}"
-                                                               id="input-customer-social-url-change-{{ social.social.id }}"
-                                                               style="max-width: 500px;width: 100%;margin: 10px" value="{{ social.url_social }}" >
-                                                        <div class="d-flex flex-row flex-shrink-0 justify-content-around">
-                                                            <button data-id="{{ social.social.id }}" class="btn btn-primary btn-customer-social-change" type="button" style="width: 50%;background: rgb(4,158,57);border-style: none;margin: 5px 5px;">Lưu</button>
-                                                            <button data-id="{{ social.social.id }}" class="btn btn-primary btn-customer-social-delete" type="button" style="width: 50%;background: var(--red);border-style: none;margin: 5px 5px;">Xóa&nbsp;</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
+                                {% for social in social_customer %}
+                                    <div class="col-12 col-md-6 pulse animated" style="padding: 5px 20px;">
+                                    <!-- Start: Collapsible Card -->
+                                        <div class="shadow-sm card" style="margin-top: 20px;">
+                                            <a class="btn btn-link text-left card-header font-weight-bold"
+                                               data-toggle="collapse"
+                                               aria-expanded="false"
+                                               aria-controls="collapse-{{ social.social.id }}"
+                                               href="#collapse-{{ social.social.id }}" role="button">
+                                                <img class="icon" src="{{ social.social.img.url|default_if_none:"#" }}"
+                                                   style="margin: 5px 10px;margin-left:
+                                                   20px;width: 30px;height: 30px;"></img>
+                                                {{ social.social.name }}
+                                            </a>
 
-                                            </div><!-- End: Collapsible Card -->
-                                        </div>
-                                    {% endfor %}
+                                            <div class="collapse collapse_customer_social" id="collapse-{{ social.social.id }}" style="padding: 20px 20px;">
+                                                <label style="margin: 10px 10px; text-align: center; align-self: center">Liên kết</label>
+                                                <form id="form-customer-social-{{ social.social.id }}">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="social_id" value="{{ social.social.id }}">
+                                                    <input class="form-control " type="url"
+                                                           name="social_url"
+                                                           data-id="{{ social.social.id }}"
+                                                           id="input-customer-social-url-change-{{ social.social.id }}"
+                                                           style="width: 100%;margin: 10px 5px; text-align: center" value="{{ social.url_social }}" >
 
+                                                    <div class="d-flex flex-row flex-shrink-0 justify-content-around">
+                                                        <button data-id="{{ social.social.id }}" class="btn btn-primary btn-customer-social-change" type="button" style="width: 50%;background: rgb(4,158,57);border-style: none;margin: 5px 5px;">Lưu</button>
+                                                        <button data-id="{{ social.social.id }}" class="btn btn-primary btn-customer-social-delete" type="button" style="width: 50%;background: var(--red);border-style: none;margin: 5px 5px;">Xóa&nbsp;</button>
+                                                    </div>
+                                                </form>
+                                            </div>
 
+                                        </div><!-- End: Collapsible Card -->
+                                    </div>
+                                {% endfor %}
 
                             </div>
                         </div>
@@ -164,4 +173,9 @@
         <a class="border rounded d-inline scroll-to-top" href="#page-top">
         <i class="fas fa-angle-up"></i></a>
     {% endblock content %}
+
+{% block js %}
+    <script src="{% static 'semantic/js/semantic.min.js' %}"></script>
+    <script src="{% static 'js/customer_social.js' %}"></script>
+{% endblock %}
 

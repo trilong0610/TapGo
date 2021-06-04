@@ -12,12 +12,16 @@ from customer.models import *
 
 
 class ViewCard(View):
-    def get(self, request):
-        # customer = InfoUser.objects.get(user=request.user)
-        # user = User.objects.get(username=request.user.username)
-        # userSocial = user.usersocial_set.all()
+    def get(self, request,card_id):
+        card = Card.objects.get(id=card_id)
+        user = card.user
+        customer = InfoUser.objects.get(user=user)
+        user_social = card.user.usersocial_set.all()
         context = {
-
+            "user_socials": user_social,
+            'card_id': card_id,
+            'user':user,
+            'customer':customer
         }
         return render(request,"go/info.html",context)
 

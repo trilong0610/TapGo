@@ -1,7 +1,33 @@
 {% extends 'customer/base.html' %}
 {% load static %}
 
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/cropper.min.css' %}" >
+{% endblock %}
+
     {% block content %}
+        <!-- MODAL TO CROP THE IMAGE -->
+        <div class="modal fade" id="modalCrop">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <img src="" id="image" style="max-width: 100%;">
+                </div>
+                <div class="modal-footer">
+                  <div class="btn-group pull-left" role="group">
+                    <button type="button" class="btn btn-default js-zoom-in">
+                      <span class="glyphicon glyphicon-zoom-in"></span>
+                    </button>
+                    <button type="button" class="btn btn-default js-zoom-out">
+                      <span class="glyphicon glyphicon-zoom-out"></span>
+                    </button>
+                  </div>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
+                  <button type="button" class="btn btn-primary js-crop-and-upload">Tải lên</button>
+                </div>
+              </div>
+            </div>
+          </div>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content" style="background: #ebebf5;padding-bottom: 10px;">
                 <!-- Start: navbar -->
@@ -47,28 +73,7 @@
                                         </div>
                                     </form>
 
-                                    <!-- MODAL TO CROP THE IMAGE -->
-                                    <div class="modal fade" id="modalCrop">
-                                        <div class="modal-dialog">
-                                          <div class="modal-content">
-                                            <div class="modal-body">
-                                              <img src="" id="image" style="max-width: 100%;">
-                                            </div>
-                                            <div class="modal-footer">
-                                              <div class="btn-group pull-left" role="group">
-                                                <button type="button" class="btn btn-default js-zoom-in">
-                                                  <span class="glyphicon glyphicon-zoom-in"></span>
-                                                </button>
-                                                <button type="button" class="btn btn-default js-zoom-out">
-                                                  <span class="glyphicon glyphicon-zoom-out"></span>
-                                                </button>
-                                              </div>
-                                              <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
-                                              <button type="button" class="btn btn-primary js-crop-and-upload">Tải lên</button>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
+
                                 </div>
                             </div><!-- End: avatar -->
                             <div class="card mb-3"></div><!-- Start: user-social -->
@@ -202,3 +207,8 @@
 
         </div>
     {% endblock content %}
+
+{% block js %}
+    <script src="{% static 'js/customer_profile.js' %}"></script>
+    <script src="{% static 'js/cropper.min.js' %}"></script>
+{% endblock %}

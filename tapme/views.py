@@ -8,6 +8,7 @@ from django.http import request, HttpRequest
 from django.shortcuts import render, redirect
 
 # Create your views here.
+from django.template import RequestContext
 from django.views import View
 from pyngrok import ngrok
 
@@ -110,7 +111,7 @@ class Logout(View):
 
 class Page_404(View):
     def get(self, request):
-        return render(request, 'tapme/page_system_404.html',{})
+        return render(request, 'tapme/../teont/templates/teont/404.html', {})
 
 
 def is_email_exist(email):
@@ -132,6 +133,3 @@ def is_empty_card_id(id):
     else:
         return False
 
-# http_tunnel = ngrok.connect(8000).public_url
-# tunnels = ngrok.get_tunnels()
-# print(tunnels)

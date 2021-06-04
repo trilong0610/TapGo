@@ -11,7 +11,7 @@ class InfoUser(models.Model):
     province = models.CharField(max_length=255, null=True, blank=True);
     district = models.CharField(max_length=255, null=True, blank=True);
     commune = models.CharField(max_length=255, null=True, blank=True);
-    avatar = models.ImageField(null=True, blank=True)
+    avatar = models.ImageField(default='statics/media/avatars/avatar5.jpeg',null=True, blank=True)
 
     def __str__(self):
         return self.user.username
@@ -27,7 +27,8 @@ class InfoUser(models.Model):
 class UserSocial(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True, null=True)
     social = models.ForeignKey(Social, on_delete=models.CASCADE,blank=True, null=True)
-    url_social = models.CharField(max_length=10000,null=True, blank=True)
+    url_social = models.CharField(max_length=255,null=True, blank=True)
+    url_scheme = models.CharField(max_length=255,null=True, blank=True)
     date_add = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

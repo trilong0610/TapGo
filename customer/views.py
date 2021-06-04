@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect
 from PIL import Image
 
 import validators
+from pip._vendor import requests
+
 import customer
 from social.models import Social
 from teont import settings
@@ -197,49 +199,56 @@ class ChangeAvatar(LoginRequiredMixin,View):
 class AddSocial(LoginRequiredMixin,View):
     login_url = 'tapme/login/'
     def post(self, request):
-
+        user = User.objects.get(username=request.user.username)
         url_social = request.POST["social_url"]
         social_id = int(request.POST["social_id"])
         social = Social.objects.get(id=social_id)
+        url_scheme = getSchemeUrl(social_id, url_social)
+        if social_id == 2 or social_id == 7:
+            url_social = str(url_social)
+            # Kiem tra do dai neu url la so dien thoai
+            if len(url_social) != 10:
+                context = {
+                    'tag':'error',
+                    'data': 'Vui lòng nhập đúng số điện thoại'
+                }
+                return JsonResponse(context)
+            else:
+                #     Tìm thấy social
+                if social:
+                    user = User.objects.get(username=request.user.username)
 
-        if social_id == 2 or social_id == 4 or social_id == 10:
+                    user_social = UserSocial.objects.create(user=request.user, social=social,url_social=url_social, url_scheme=url_scheme)
 
-            #     Tìm thấy social
-            if social:
-                user = User.objects.get(username=request.user.username)
-                user_social = UserSocial.objects.create(user=request.user, social=social,url_social=url_social)
+                    # Lưu thành công
+                    if user_social:
+                        user_social.save()
+                        context = {
+                            "tag": "success",
+                            "data": "Thêm mạng xã hội thành công"
+                        }
+                        return JsonResponse(context)
 
-                # Lưu thành công
-                if user_social:
-                    user_social.save()
-                    context = {
-                        "tag": "success",
-                        "data": "Thêm mạng xã hội thành công"
-                    }
-                    return JsonResponse(context)
+                    # Lưu thất bại
+                    else:
+                        context = {
+                            "tag": "error",
+                            "data": "Không tìm thấy mạng xã hội"
+                        }
+                        return JsonResponse(context)
 
-                # Lưu thất bại
+                #     không tìm thấy social hoặc url không đúng format
                 else:
                     context = {
                         "tag": "error",
                         "data": "Không tìm thấy mạng xã hội"
                     }
                     return JsonResponse(context)
-
-            #     không tìm thấy social hoặc url không đúng format
-            else:
-                context = {
-                    "tag": "error",
-                    "data": "Không tìm thấy mạng xã hội"
-                }
-                return JsonResponse(context)
 
         else:
-            #     Tìm thấy social và url đúng format
-            if social and validators.url(url_social):
-                user = User.objects.get(username=request.user.username)
-                user_social = UserSocial.objects.create(user=request.user, social=social, url_social=url_social)
-
+            if social_id == 3 or social_id == 4 or social_id == 5:
+                user_social = UserSocial.objects.create(user=request.user, social=social, url_social=url_social,
+                                                        url_scheme=url_scheme)
                 # Lưu thành công
                 if user_social:
                     user_social.save()
@@ -256,14 +265,36 @@ class AddSocial(LoginRequiredMixin,View):
                         "data": "Không tìm thấy mạng xã hội"
                     }
                     return JsonResponse(context)
-
-            #     không tìm thấy social hoặc url không đúng format
             else:
-                context = {
-                    "tag": "error",
-                    "data": "Định dạng liên kết không đúng"
-                }
-                return JsonResponse(context)
+                #     Tìm thấy social và url đúng format
+                if social and validators.url(url_social):
+
+                    user_social = UserSocial.objects.create(user=request.user, social=social, url_social=url_social, url_scheme=url_scheme)
+
+                    # Lưu thành công
+                    if user_social:
+                        user_social.save()
+                        context = {
+                            "tag": "success",
+                            "data": "Thêm mạng xã hội thành công"
+                        }
+                        return JsonResponse(context)
+
+                    # Lưu thất bại
+                    else:
+                        context = {
+                            "tag": "error",
+                            "data": "Không tìm thấy mạng xã hội"
+                        }
+                        return JsonResponse(context)
+
+                #     không tìm thấy social hoặc url không đúng format
+                else:
+                    context = {
+                        "tag": "error",
+                        "data": "Định dạng liên kết không đúng"
+                    }
+                    return JsonResponse(context)
 
 class ChangeSocial(LoginRequiredMixin,View):
     login_url = 'tapme/login/'
@@ -315,3 +346,81 @@ class ChangeSocial(LoginRequiredMixin,View):
                 }
                 return JsonResponse(context)
 
+class DeleteSocial(LoginRequiredMixin,View):
+    login_url = 'tapme/login/'
+    def post(self, request):
+        social_id = int(request.POST["social_id"])
+
+        user_social = UserSocial.objects.get(user=request.user, social_id=social_id)
+
+        #     Tìm thấy social
+        if user_social:
+            # Lưu thành công
+            user_social.delete()
+            context = {
+                "tag": "success",
+                "data": "Xoá thành công thành công"
+            }
+            return JsonResponse(context)
+            # Lưu thất bại
+        #     không tìm thấy social hoặc url không đúng format
+        else:
+            context = {
+                "tag": "error",
+                "data": "Xoá thất bại"
+            }
+            return JsonResponse(context)
+
+class Demo(View):
+    def post(self, request):
+        social_id = request.POST["social_id"]
+        social_user = UserSocial.objects.get(user=request.user, social__id=1)
+
+        # username = ConvertURLToUsername(social_user.social_id,"https://www.facebook.com/teooo.nt/")
+        context = {
+            'tag':'success',
+            # 'data': username
+        }
+        return JsonResponse(context)
+
+def getSchemeUrl(social_id,url):
+    social_id = int(social_id)
+    username = ''
+
+    # neu url la so dien thoai thi khong can convert sang username
+    if social_id == 2 or social_id == 3 or social_id == 4 or social_id == 5 or social_id == 7 or social_id == 8:
+        username = url
+    else:
+        if url.__contains__('='):
+            list = str(url).split('=')
+            username = list[len(list) - 1]
+        else:
+            list = str(url).split('/')
+            username = list[len(list)-1]
+            if username == '':
+                username = list[len(list) - 2]
+
+    if social_id == 1: # FB
+        return "fb://profile/" + getUidFacebook(username)
+    if social_id == 2: # zalo
+        return "https://zalo.me/" + username
+    if social_id == 3: # tiktok
+        return "snssdk1233://user/profile/" + username
+    if social_id == 4: # insta
+        return "instagram://user?username=" + username
+    if social_id == 5: # email
+        return "mailto:" + username
+    if social_id == 6: # twi
+        return "twitter://user?screen_name=" + username
+    if social_id == 7: # tele
+        return "tg://resolve?domain=" + username
+    if social_id == 8: # bloger
+        return username
+    if social_id == 9: # linkedin
+        return "linkedin://in/" + username
+
+def getUidFacebook(username):
+    post_data = {'username': username}
+    response = requests.post('https://api.findids.net/api/get-uid-from-username', data=post_data)
+    content = response.json()
+    return content["data"]["id"]
