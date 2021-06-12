@@ -24,13 +24,13 @@ $("#input_customer_social_social_id").change(function (e){
              e.preventDefault();
             break
         case 3: //TIKTOK
-            $("#input_customer_social_social_url").attr("placeholder", "Nhập tên người dùng TikTok (vd: _trilong_)")
+            $("#input_customer_social_social_url").attr("placeholder", "Nhập tên người dùng của bạn (vd: _trilong_)")
             $("#input_customer_social_social_url").attr('type','text');
             $("#input_customer_social_social_url").attr('maxlength','255');
             e.preventDefault();
             break
         case 4: //INSTAGRAM
-            $("#input_customer_social_social_url").attr("placeholder", "Nhập tên người dùng Instagram (vd: _trilong_)")
+            $("#input_customer_social_social_url").attr("placeholder", "Nhập tên người dùng của bạn (vd: _trilong_)")
             $("#input_customer_social_social_url").attr('type','text');
             $("#input_customer_social_social_url").attr('maxlength','255');
             e.preventDefault();
@@ -48,8 +48,9 @@ $("#input_customer_social_social_id").change(function (e){
             e.preventDefault();
             break
         case 7: //TELEGRAM
-            $("#input_customer_social_social_url").attr("placeholder", "Nhập số điện thoại Telegram")
-            $("#input_customer_social_social_url").attr('type','number');
+            $("#input_customer_social_social_url").attr("placeholder", "Nhập tên người dùng của bạn (vd: trilong0610)")
+            $("#input_customer_social_social_url").attr('type','text');
+            $("#input_customer_social_social_url").attr('maxlength','255');
             e.preventDefault();
             break
         case 8: //BLOGER
@@ -79,7 +80,7 @@ $("#form_customer_social_add_social").submit(function(e) {
 
     )
     var form = $(this);
-    var url = '/customer/add_social/'
+    var url = 'https://trilong0610.pythonanywhere.com/customer/add_social/'
 
     $.ajax({
            type: "POST",
@@ -117,7 +118,7 @@ $('.btn-customer-social-change').click(function (e) {
 
     var form = $('form#form-customer-social-'+id).serialize();
     console.log(form)
-    var url = '/customer/change_social/'
+    var url = 'https://trilong0610.pythonanywhere.com/customer/change_social/'
     $.ajax({
         url: url,
         type: "POST",
@@ -137,7 +138,7 @@ $('.btn-customer-social-delete').click(function (e) {
 
     var form = $('form#form-customer-social-'+id).serialize();
     console.log(form)
-    var url = '/customer/delete_social/'
+    var url = 'https://trilong0610.pythonanywhere.com/customer/delete_social/'
     $.ajax({
         url: url,
         type: "POST",

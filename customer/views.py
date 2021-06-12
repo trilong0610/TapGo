@@ -39,7 +39,7 @@ class ViewSocial(LoginRequiredMixin,View):
     def get(self,request):
         user = User.objects.get(username=request.user.username)
         customer, created = InfoUser.objects.get_or_create(user=user)
-        social_customer = user.usersocial_set.all()
+        social_customer = user.usersocial_set.all().order_by('social__id')
 
         # Lấy danh sách id những social đã liên kết của user hiện tại
         list_id_social_customer = user.usersocial_set.all().values_list('social__id', flat=True)
@@ -190,7 +190,7 @@ class ChangeAvatar(LoginRequiredMixin,View):
             resized_image = cropped_image.resize((720, 720), Image.ANTIALIAS)
             resized_image.save(uploaded_file_url)
             customer.avatar.delete();
-            customer.avatar =  uploaded_file_url
+            customer.avatar =  uploaded_file_url.split("media/")[1]
             customer.save();
             return redirect('tapme:customer:customer_profile')
         else:
@@ -204,8 +204,30 @@ class AddSocial(LoginRequiredMixin,View):
         social_id = int(request.POST["social_id"])
         social = Social.objects.get(id=social_id)
         url_scheme = getSchemeUrl(social_id, url_social)
-        if social_id == 2 or social_id == 7:
+
+        if social_id == 7:
             url_social = str(url_social)
+            user_social = UserSocial.objects.create(user=request.user, social=social,url_social=url_social, url_scheme=url_scheme)
+            # Lưu thành công
+            if user_social:
+                user_social.save()
+                context = {
+                    "tag": "success",
+                    "data": "Thêm mạng xã hội thành công"
+                }
+                return JsonResponse(context)
+
+            # Lưu thất bại
+            else:
+                context = {
+                    "tag": "error",
+                    "data": "Không tìm thấy mạng xã hội"
+                }
+                return JsonResponse(context)
+
+        if social_id == 2:
+            url_social = str(url_social)
+
             # Kiem tra do dai neu url la so dien thoai
             if len(url_social) != 10:
                 context = {
@@ -216,7 +238,6 @@ class AddSocial(LoginRequiredMixin,View):
             else:
                 #     Tìm thấy social
                 if social:
-                    user = User.objects.get(username=request.user.username)
 
                     user_social = UserSocial.objects.create(user=request.user, social=social,url_social=url_social, url_scheme=url_scheme)
 

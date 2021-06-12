@@ -10,7 +10,6 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.template import RequestContext
 from django.views import View
-from pyngrok import ngrok
 
 from card.models import Card
 from customer.models import InfoUser

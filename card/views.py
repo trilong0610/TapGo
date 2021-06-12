@@ -16,7 +16,7 @@ class ViewCard(View):
         card = Card.objects.get(id=card_id)
         user = card.user
         customer = InfoUser.objects.get(user=user)
-        user_social = card.user.usersocial_set.all()
+        user_social = card.user.usersocial_set.all().order_by('social__id')
         context = {
             "user_socials": user_social,
             'card_id': card_id,

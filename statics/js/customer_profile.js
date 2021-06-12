@@ -3,7 +3,7 @@ $("#form-user-address").submit(function(e) {
     e.preventDefault(); // avoid to execute the actual submit of the form.
 
     var form = $(this);
-    var url = '/customer/change_address/'
+    var url = 'https://trilong0610.pythonanywhere.com/customer/change_address/'
 
     $.ajax({
            type: "POST",
@@ -27,7 +27,7 @@ $("#form-user-info").submit(function(e) {
     e.preventDefault(); // avoid to execute the actual submit of the form.
 
     var form = $(this);
-    var url = '/customer/change_info/'
+    var url = 'https://trilong0610.pythonanywhere.com/customer/change_info/'
 
     $.ajax({
            type: "POST",
