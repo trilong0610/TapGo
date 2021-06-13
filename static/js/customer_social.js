@@ -80,7 +80,7 @@ $("#form_customer_social_add_social").submit(function(e) {
 
     )
     var form = $(this);
-    var url = 'https://trilong0610.pythonanywhere.com/customer/add_social/'
+    var url = 'https://teont.me/tapme/customer/add_social/'
 
     $.ajax({
            type: "POST",
@@ -118,7 +118,7 @@ $('.btn-customer-social-change').click(function (e) {
 
     var form = $('form#form-customer-social-'+id).serialize();
     console.log(form)
-    var url = 'https://trilong0610.pythonanywhere.com/customer/change_social/'
+    var url = 'https://teont.me/tapme/customer/change_social/'
     $.ajax({
         url: url,
         type: "POST",
@@ -138,7 +138,7 @@ $('.btn-customer-social-delete').click(function (e) {
 
     var form = $('form#form-customer-social-'+id).serialize();
     console.log(form)
-    var url = 'https://trilong0610.pythonanywhere.com/customer/delete_social/'
+    var url = 'https://teont.me/tapme/customer/delete_social/'
     $.ajax({
         url: url,
         type: "POST",

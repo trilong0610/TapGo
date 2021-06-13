@@ -6,7 +6,7 @@ from teont import settings
 
 app_name = 'card'
 urlpatterns = [
-    path('<int:card_id>/', views.ViewCard.as_view(), name = "view_card"),
+
 
 ]
 

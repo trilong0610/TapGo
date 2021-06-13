@@ -3,6 +3,7 @@ from django.urls import path, include
 
 from tapme import views
 from teont import settings
+from card.views import ViewCard
 
 app_name = 'tapme'
 urlpatterns = [
@@ -14,6 +15,7 @@ urlpatterns = [
     path('register/', views.Register.as_view(),name='register'),
     path('reset-password/', views.ResetPassword.as_view(),name='reset_password'),
     path('404/', views.Page_404.as_view(),name="page_404"),
+    path('<int:card_id>/', ViewCard.as_view(), name = "view_card"),
 
 
 ]
