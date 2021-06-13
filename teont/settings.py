@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-fk+zibz0s-z-x3s%fjqx_91p&#vzy-am7nbn9rzt-rns4-mdo0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["teont.me","134.209.110.38"]
 
 
 # Application definition
@@ -123,16 +123,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/statics/'
+STATIC_URL = '/static/'
 
-STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "statics"),
 ]
 
 
-MEDIA_ROOT=os.path.join(BASE_DIR,"statics/media")
+MEDIA_ROOT=os.path.join(BASE_DIR,"static/media")
 MEDIA_URL='/media/'
 
 LOGIN_REDIRECT_URL = '/'
