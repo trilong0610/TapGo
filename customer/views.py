@@ -409,10 +409,8 @@ def getSchemeUrl(social_id,url):
     username = ''
 
     # neu url la so dien thoai thi khong can convert sang username
-    if social_id == 2 or social_id == 3 or social_id == 4 or social_id == 5 or social_id == 7 or social_id == 8:
-        username = url
-    else:
-        if url.__contains__('='):
+    if social_id == 1:
+	if url.__contains__('='):
             list = str(url).split('=')
             username = list[len(list) - 1]
         else:
@@ -421,12 +419,15 @@ def getSchemeUrl(social_id,url):
             if username == '':
                 username = list[len(list) - 2]
 
+    else:
+        username = url
+
     if social_id == 1: # FB
         return "fb://profile/" + getUidFacebook(username)
     if social_id == 2: # zalo
         return "https://zalo.me/" + username
     if social_id == 3: # tiktok
-        return "snssdk1233://user/profile/" + username
+        return "https://www.tiktok.com/" + username
     if social_id == 4: # insta
         return "instagram://user?username=" + username
     if social_id == 5: # email

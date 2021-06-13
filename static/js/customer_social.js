@@ -24,13 +24,13 @@ $("#input_customer_social_social_id").change(function (e){
              e.preventDefault();
             break
         case 3: //TIKTOK
-            $("#input_customer_social_social_url").attr("placeholder", "Nhập tên người dùng của bạn (vd: _trilong_)")
+            $("#input_customer_social_social_url").attr("placeholder", "Nhập tên người dùng TikTok (vd: @_abc123_)")
             $("#input_customer_social_social_url").attr('type','text');
             $("#input_customer_social_social_url").attr('maxlength','255');
             e.preventDefault();
             break
         case 4: //INSTAGRAM
-            $("#input_customer_social_social_url").attr("placeholder", "Nhập tên người dùng của bạn (vd: _trilong_)")
+            $("#input_customer_social_social_url").attr("placeholder", "Nhập tên người dùng Instagram (vd: _abc123_)")
             $("#input_customer_social_social_url").attr('type','text');
             $("#input_customer_social_social_url").attr('maxlength','255');
             e.preventDefault();
@@ -42,25 +42,25 @@ $("#input_customer_social_social_id").change(function (e){
             e.preventDefault();
             break
         case 6: //TWITTER
-            $("#input_customer_social_social_url").attr("placeholder", "Nhập liên kết Twitter (https://twitter.com/....)")
+            $("#input_customer_social_social_url").attr("placeholder", "Nhập tên người dùng Twitter (vd: abc123)")
             $("#input_customer_social_social_url").attr('type','url');
             $("#input_customer_social_social_url").attr('maxlength','255');
             e.preventDefault();
             break
         case 7: //TELEGRAM
-            $("#input_customer_social_social_url").attr("placeholder", "Nhập tên người dùng của bạn (vd: trilong0610)")
+            $("#input_customer_social_social_url").attr("placeholder", "Nhập tên người dùng Telegram (vd: abc123)")
             $("#input_customer_social_social_url").attr('type','text');
             $("#input_customer_social_social_url").attr('maxlength','255');
             e.preventDefault();
             break
         case 8: //BLOGER
-            $("#input_customer_social_social_url").attr("placeholder", "Nhập liên kết Blogspot (https://xxx.blogspot.com/....)")
+            $("#input_customer_social_social_url").attr("placeholder", "Nhập liên kết Blogspot (vd: https://xxx.blogspot.com/....)")
             $("#input_customer_social_social_url").attr('type','url');
             $("#input_customer_social_social_url").attr('maxlength','255');
             e.preventDefault();
             break
         case 9: //LINKEDIN
-            $("#input_customer_social_social_url").attr("placeholder", "Nhập liên kết LinkedIn (https://www.linkedin.com/in/....)")
+            $("#input_customer_social_social_url").attr("placeholder", "Nhập tên người dùng LinkedIn (vd: abc123)")
             $("#input_customer_social_social_url").attr('type','url');
             $("#input_customer_social_social_url").attr('maxlength','255');
             e.preventDefault();
