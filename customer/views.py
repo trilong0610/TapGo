@@ -410,7 +410,7 @@ def getSchemeUrl(social_id,url):
 
     # neu url la so dien thoai thi khong can convert sang username
     if social_id == 1:
-	if url.__contains__('='):
+        if url.__contains__('='):
             list = str(url).split('=')
             username = list[len(list) - 1]
         else:
