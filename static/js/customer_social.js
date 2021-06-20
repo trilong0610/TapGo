@@ -12,7 +12,7 @@ $("#input_customer_social_social_id").change(function (e){
     var id = parseInt($(this).val())
     // Place holder
     switch (id) {
-        case 1: //FB
+	case 1: //FB
             $("#input_customer_social_social_url").attr("placeholder", "Nhập liên kết Facebook (https://www.facebook.com/....)")
             $("#input_customer_social_social_url").attr('type','url');
             $("#input_customer_social_social_url").attr('maxlength','255');
@@ -80,7 +80,7 @@ $("#form_customer_social_add_social").submit(function(e) {
 
     )
     var form = $(this);
-    var url = 'https://teont.me/tapme/customer/add_social/'
+    var url = 'https://teont.me/tapgo/customer/add_social/'
 
     $.ajax({
            type: "POST",
@@ -118,7 +118,7 @@ $('.btn-customer-social-change').click(function (e) {
 
     var form = $('form#form-customer-social-'+id).serialize();
     console.log(form)
-    var url = 'https://teont.me/tapme/customer/change_social/'
+    var url = 'https://teont.me/tapgo/customer/change_social/'
     $.ajax({
         url: url,
         type: "POST",
@@ -138,7 +138,7 @@ $('.btn-customer-social-delete').click(function (e) {
 
     var form = $('form#form-customer-social-'+id).serialize();
     console.log(form)
-    var url = 'https://teont.me/tapme/customer/delete_social/'
+    var url = 'https://teont.me/tapgo/customer/delete_social/'
     $.ajax({
         url: url,
         type: "POST",

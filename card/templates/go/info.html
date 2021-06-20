@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Table - Brand</title>
+    <title>TapGo</title>
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
@@ -51,7 +51,7 @@
                             <!-- Start: button -->
                             <div class="text-center" style="font-size: 25px;color: #131313;text-align: center;margin-top: 20px;">
                                 {% if customer.phone %}
-                                    <a href="contact://{{ customer.phone }}">
+                                    <a href="tel://{{ customer.phone }}">
                                         <button class="btn btn-primary shadow-sm" type="button" style="font-size: 10px;">Lưu số điện thoại</button>
                                     </a>
                                 {% endif %}

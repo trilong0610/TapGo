@@ -326,11 +326,12 @@ class ChangeSocial(LoginRequiredMixin,View):
 
         user_social = UserSocial.objects.get(user=request.user, social_id=social_id)
 
-        if social_id == 2 or social_id == 4 or social_id == 10: # Những social dùng số điện thoại
+        if social_id == 2 or social_id == 3 or social_id == 4 or social_id == 10: # Những social dùng số điện thoại hoặc username
 
             #     Tìm thấy social
             if user_social :
                 user_social.url_social = url_social
+                user_social.url_scheme = getSchemeUrl(social_id,url_social)
                 # Lưu thành công
                 user_social.save()
                 context = {
@@ -351,6 +352,7 @@ class ChangeSocial(LoginRequiredMixin,View):
             #     Tìm thấy social và url đúng format
             if user_social and validators.url(url_social):
                 user_social.url_social = url_social
+                user_social.url_scheme = getSchemeUrl(social_id,url_social)
                 # Lưu thành công
                 user_social.save()
                 context = {
